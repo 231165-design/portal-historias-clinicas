@@ -45,3 +45,5 @@ Sistema web completo para la gestión de historias clínicas, consultas médicas
 git clone https://github.com/231165-design/portal-historias-clinicas.git
 cd portal-historias-clinicas
 
+
+
