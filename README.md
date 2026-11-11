@@ -1,50 +1,47 @@
 # 🏥 HIS Postas - Sistema de Historias Clínicas
 
-Sistema completo de gestión de historias clínicas para postas de salud del Perú.
+Sistema web completo para la gestión de historias clínicas, consultas médicas, citas y vacunas en postas de salud del Perú. Desarrollado con una arquitectura cliente-servidor moderna, garantizando seguridad, escalabilidad y una experiencia de usuario óptima.
 
-## 📋 Descripción
+## 📋 Características Principales
 
-Sistema web desarrollado con React y Node.js que permite:
-- Gestión de pacientes (CRUD completo)
-- Registro de consultas médicas (formato SOAP)
-- Gestión de citas
-- Registro de vacunas
-- Administración de usuarios con roles
-- Dashboard con estadísticas en tiempo real
-- Auditoría de acciones
-- Autenticación con JWT
-- Modo claro/oscuro
+- **Gestión de Pacientes:** CRUD completo con búsqueda avanzada, paginación y registro de antecedentes.
+- **Consultas Médicas:** Registro detallado utilizando el formato SOAP (Subjetivo, Objetivo, Análisis, Plan) y signos vitales.
+- **Gestión de Citas:** Programación, confirmación y cancelación de citas médicas.
+- **Registro de Vacunas:** Control y seguimiento del esquema de vacunación por paciente.
+- **Dashboard Interactivo:** Estadísticas en tiempo real, gráficos dinámicos (Recharts) y actividad reciente.
+- **Administración de Usuarios:** Control de acceso basado en roles (RBAC) y auditoría de acciones.
+- **Seguridad:** Autenticación robusta con JSON Web Tokens (JWT), encriptación de contraseñas con Bcrypt y protección contra inyecciones SQL y XSS.
+- **Interfaz de Usuario:** Diseño responsive (adaptable a móviles), modo claro/oscuro y notificaciones interactivas.
 
-## 🛠️ Tecnologías
+## 🛠️ Tecnologías Utilizadas
 
 ### Frontend
-- React 18
-- Vite
-- React Router DOM
-- TailwindCSS
-- Axios
-- Recharts
-- React Hot Toast
+- **React 18** (con Hooks como `useState`, `useEffect`, `useContext`)
+- **Vite** (empaquetador y servidor de desarrollo)
+- **React Router DOM** (navegación SPA)
+- **TailwindCSS** (diseño y estilos responsive)
+- **Axios** (consumo de API REST)
+- **Recharts** (gráficos estadísticos)
+- **React Hot Toast** (notificaciones)
 
 ### Backend
-- Node.js
-- Express
-- Sequelize (ORM)
-- MySQL (XAMPP)
-- JWT
-- Bcrypt
-- Express Validator
-- Winston (logs)
+- **Node.js & Express** (servidor y API REST)
+- **Sequelize** (ORM para base de datos)
+- **MySQL** (gestor de base de datos relacional)
+- **JWT (JSON Web Tokens)** (autenticación)
+- **Bcrypt** (hash de contraseñas)
+- **Express Validator** (validación de datos)
+- **Winston** (registro de logs y auditoría)
 
-## 🚀 Instalación
+## 🚀 Instalación y Ejecución
 
 ### Requisitos previos
-- Node.js 18+
-- XAMPP (MySQL)
+- Node.js (v18 o superior)
+- XAMPP (con el módulo MySQL iniciado)
 - Git
 
-### Backend
+### 1. Clonar el repositorio
 ```bash
-cd backend
-npm install
-npm run dev
+git clone https://github.com/231165-design/portal-historias-clinicas.git
+cd portal-historias-clinicas
+
