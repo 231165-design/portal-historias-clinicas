@@ -1,13 +1,13 @@
 REPORTE DE VERIFICACIÓN DEL PROYECTO
 Carpeta: D:\U\CLASS 26-2\COMERC\zprou\salud\portalhistorias
-Fecha:   12/11/2026, 5:41:06 p. m.
+Fecha:   12/11/2026, 5:44:11 p. m.
 Node:    v24.14.0
 
 0. Repositorio y autoría (Git)
 ------------------------------
-  [X]  3 commits en 1 días distintos (del 2026-11-12 al 2026-11-12).
+  [!]  8 commits en 3 días distintos (del 2026-11-12 al 2026-11-12).
        Autores:
-         3	231165-design <231165@unamba.edu.pe>
+         8	231165-design <231165@unamba.edu.pe>
   [OK] Etiquetas de versión: v3.0
          v3.0: 2026-11-12
   [OK] Repositorio remoto: https://github.com/231165-design/portal-historias-clinicas.git
@@ -58,5 +58,5 @@ Estructura detectada
 
 Resumen
 -------
-  28 correctos · 0 para revisar · 1 problemas
+  28 correctos · 1 para revisar · 0 problemas
   Este reporte orienta la revisión; la nota se decide viendo el sistema funcionar y con la defensa del estudiante.
