@@ -8,12 +8,12 @@ import { toast } from 'react-hot-toast';
 import PacientesTable from '../../components/tables/PacientesTable';
 import ConfirmModal from '../../components/modals/ConfirmModal';
 import Button from '../../components/ui/Button';
-import Input from '../../components/ui/Input';
-import Select from '../../components/ui/Select';
-import Card from '../../components/ui/Card';
+import BannerPacientes from '../../components/pacientes/BannerPacientes';
+import StatsPacientes from '../../components/pacientes/StatsPacientes';
+import FiltrosPacientes from '../../components/pacientes/FiltrosPacientes';
+import HeaderListaPacientes from '../../components/pacientes/HeaderListaPacientes';
 import useDebounce from '../../hooks/useDebounce';
 import pacienteService from '../../services/pacienteService';
-import { TIPOS_SEGURO_LIST } from '../../utils/constants';
 
 function ListaPacientes() {
   const navigate = useNavigate();
@@ -22,14 +22,7 @@ function ListaPacientes() {
   // ESTADO
   // ============================================================
   const [pacientes, setPacientes] = useState([]);
-  const [stats, setStats] = useState({
-    total: 0,
-    consultasMes: 0,
-    citasPendientes: 0,
-    vacunasAlDia: 0,
-    masculino: 0,
-    femenino: 0,
-  });
+  const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(true);
   const [loadingStats, setLoadingStats] = useState(true);
   const [search, setSearch] = useState('');
@@ -55,16 +48,7 @@ function ListaPacientes() {
     try {
       setLoadingStats(true);
       const response = await pacienteService.getEstadisticas();
-      if (response) {
-        setStats({
-          total: response.total || 0,
-          consultasMes: response.consultasMes || 0,
-          citasPendientes: response.citasPendientes || 0,
-          vacunasAlDia: response.vacunasAlDia || 0,
-          masculino: response.masculino || 0,
-          femenino: response.femenino || 0,
-        });
-      }
+      if (response) setStats(response);
     } catch (error) {
       console.error('Error al cargar estadísticas:', error);
     } finally {
@@ -116,8 +100,16 @@ function ListaPacientes() {
   }, [debouncedSearch, filtroSexo, filtroSeguro, filtroEdad]);
 
   // ============================================================
-  // ELIMINAR
+  // HANDLERS
   // ============================================================
+  const limpiarFiltros = () => {
+    setSearch('');
+    setFiltroSexo('');
+    setFiltroSeguro('');
+    setFiltroEdad('');
+    setPage(1);
+  };
+
   const handleEliminar = (paciente) => {
     setPacienteAEliminar(paciente);
     setModalOpen(true);
@@ -141,223 +133,51 @@ function ListaPacientes() {
     }
   };
 
-  // ============================================================
-  // NAVEGACIÓN
-  // ============================================================
-  const handleView = (paciente) => navigate(`/pacientes/${paciente.id}`);
-  const handleEdit = (paciente) => navigate(`/pacientes/${paciente.id}/editar`);
-  const handleNew = () => navigate('/pacientes/nuevo');
-
-  // ============================================================
-  // LIMPIAR FILTROS
-  // ============================================================
-  const limpiarFiltros = () => {
-    setSearch('');
-    setFiltroSexo('');
-    setFiltroSeguro('');
-    setFiltroEdad('');
-    setPage(1);
-  };
-
   const hayFiltrosActivos = search || filtroSexo || filtroSeguro || filtroEdad;
-
-  // ============================================================
-  // OPCIONES DE FILTROS
-  // ============================================================
-  const opcionesSexo = [
-    { value: '', label: 'Todos los sexos' },
-    { value: 'M', label: 'Masculino' },
-    { value: 'F', label: 'Femenino' },
-  ];
-
-  const opcionesSeguro = [
-    { value: '', label: 'Todos los seguros' },
-    ...TIPOS_SEGURO_LIST.map((s) => ({ value: s, label: s })),
-  ];
-
-  const opcionesEdad = [
-    { value: '', label: 'Rango de edad' },
-    { value: '0-5', label: '0-5 años' },
-    { value: '6-17', label: '6-17 años' },
-    { value: '18-29', label: '18-29 años' },
-    { value: '30-59', label: '30-59 años' },
-    { value: '60+', label: '60+ años' },
-  ];
 
   // ============================================================
   // RENDER
   // ============================================================
   return (
     <div className="space-y-6 animate-fade-in">
+      {/* Banner */}
+      <BannerPacientes />
 
-      {/* ============================================================ */}
-      {/* BANNER DE BIENVENIDA */}
-      {/* ============================================================ */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-primary-600 to-purple-700 dark:from-blue-800 dark:via-primary-800 dark:to-purple-900 p-6 lg:p-8 text-white shadow-xl">
-        <div className="relative z-10">
-          <div className="flex items-center gap-4 mb-2">
-            <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-3xl">
-              👥
-            </div>
-            <div>
-              <h1 className="text-2xl lg:text-3xl font-extrabold">Pacientes</h1>
-              <p className="text-sm text-white/80 mt-1">
-                Gestiona el registro de pacientes de la posta
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-        <div className="absolute bottom-0 right-20 w-32 h-32 bg-white/10 rounded-full translate-y-1/2"></div>
-      </div>
+      {/* Estadísticas */}
+      <StatsPacientes stats={stats} loading={loadingStats} />
 
-      {/* ============================================================ */}
-      {/* ESTADÍSTICAS (4 TARJETAS) */}
-      {/* ============================================================ */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card padding="md" hover>
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-2xl text-white shadow-md">
-              👥
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Total Pacientes
-              </p>
-              <p className="text-2xl font-extrabold text-gray-800 dark:text-white mt-1">
-                {loadingStats ? '...' : stats.total}
-              </p>
-            </div>
-          </div>
-        </Card>
+      {/* Filtros */}
+      <FiltrosPacientes
+        search={search}
+        setSearch={setSearch}
+        filtroSexo={filtroSexo}
+        setFiltroSexo={setFiltroSexo}
+        filtroSeguro={filtroSeguro}
+        setFiltroSeguro={setFiltroSeguro}
+        filtroEdad={filtroEdad}
+        setFiltroEdad={setFiltroEdad}
+        onLimpiar={limpiarFiltros}
+        hayFiltrosActivos={hayFiltrosActivos}
+      />
 
-        <Card padding="md" hover>
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-2xl text-white shadow-md">
-              📅
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Consultas Mes
-              </p>
-              <p className="text-2xl font-extrabold text-gray-800 dark:text-white mt-1">
-                {loadingStats ? '...' : stats.consultasMes}
-              </p>
-            </div>
-          </div>
-        </Card>
+      {/* Header + Botón nuevo */}
+      <HeaderListaPacientes
+        total={total}
+        mostrando={pacientes.length}
+        loading={loading}
+        onNuevo={() => navigate('/pacientes/nuevo')}
+      />
 
-        <Card padding="md" hover>
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-2xl text-white shadow-md">
-              ⏰
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Citas Pendientes
-              </p>
-              <p className="text-2xl font-extrabold text-gray-800 dark:text-white mt-1">
-                {loadingStats ? '...' : stats.citasPendientes}
-              </p>
-            </div>
-          </div>
-        </Card>
-
-        <Card padding="md" hover>
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center text-2xl text-white shadow-md">
-              💉
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Vacunas al Día
-              </p>
-              <p className="text-2xl font-extrabold text-gray-800 dark:text-white mt-1">
-                {loadingStats ? '...' : stats.vacunasAlDia}
-              </p>
-            </div>
-          </div>
-        </Card>
-      </div>
-
-      {/* ============================================================ */}
-      {/* BARRA DE FILTROS */}
-      {/* ============================================================ */}
-      <Card padding="md">
-        <div className="space-y-3">
-          <Input
-            placeholder="🔍 Buscar por nombre, apellido, DNI o historia clínica..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            icon={(props) => (
-              <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            )}
-          />
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            <Select
-              value={filtroSexo}
-              onChange={(e) => setFiltroSexo(e.target.value)}
-              options={opcionesSexo}
-            />
-            <Select
-              value={filtroSeguro}
-              onChange={(e) => setFiltroSeguro(e.target.value)}
-              options={opcionesSeguro}
-            />
-            <Select
-              value={filtroEdad}
-              onChange={(e) => setFiltroEdad(e.target.value)}
-              options={opcionesEdad}
-            />
-            <Button
-              variant={hayFiltrosActivos ? 'danger' : 'secondary'}
-              onClick={limpiarFiltros}
-              disabled={!hayFiltrosActivos}
-              fullWidth
-            >
-              {hayFiltrosActivos ? '✕ Limpiar filtros' : 'Sin filtros'}
-            </Button>
-          </div>
-        </div>
-      </Card>
-
-      {/* ============================================================ */}
-      {/* HEADER DE TABLA + BOTÓN NUEVO */}
-      {/* ============================================================ */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <h2 className="text-lg font-bold text-gray-800 dark:text-white">
-            Lista de Pacientes
-          </h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            {loading ? 'Cargando...' : `Mostrando ${pacientes.length} de ${total} pacientes`}
-          </p>
-        </div>
-        <Button variant="primary" onClick={handleNew} size="lg">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-          Nuevo Paciente
-        </Button>
-      </div>
-
-      {/* ============================================================ */}
-      {/* TABLA DE PACIENTES */}
-      {/* ============================================================ */}
+      {/* Tabla de pacientes */}
       <PacientesTable
         pacientes={pacientes}
         loading={loading}
-        onView={handleView}
-        onEdit={handleEdit}
+        onView={(p) => navigate(`/pacientes/${p.id}`)}
+        onEdit={(p) => navigate(`/pacientes/${p.id}/editar`)}
         onDelete={handleEliminar}
       />
 
-      {/* ============================================================ */}
-      {/* PAGINACIÓN */}
-      {/* ============================================================ */}
+      {/* Paginación */}
       {!loading && totalPages > 1 && (
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -407,9 +227,7 @@ function ListaPacientes() {
         </div>
       )}
 
-      {/* ============================================================ */}
-      {/* MODAL ELIMINAR */}
-      {/* ============================================================ */}
+      {/* Modal Eliminar */}
       <ConfirmModal
         isOpen={modalOpen}
         onClose={() => {

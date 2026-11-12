@@ -1,11 +1,17 @@
 REPORTE DE VERIFICACIÓN DEL PROYECTO
 Carpeta: D:\U\CLASS 26-2\COMERC\zprou\salud\portalhistorias
-Fecha:   12/11/2026, 4:19:11 p. m.
+Fecha:   12/11/2026, 4:54:25 p. m.
 Node:    v24.14.0
 
 0. Repositorio y autoría (Git)
 ------------------------------
-  [X]  La carpeta no es un repositorio Git (no hay historial que revisar).
+  [X]  2 commits en 1 días distintos (del 2026-11-12 al 2026-11-12).
+       Autores:
+         2	231165-design <231165@unamba.edu.pe>
+  [!]  No hay etiquetas de versión (git tag v1.0, v2.0...).
+  [OK] Repositorio remoto: https://github.com/231165-design/portal-historias-clinicas.git
+  [OK] Ningún .env subido al repositorio.
+  [OK] node_modules no está en el repositorio.
   [OK] .gitignore incluye node_modules y .env.
 
 Estructura detectada
@@ -16,16 +22,7 @@ Estructura detectada
 1. Versión 1 — Frontend en React
 --------------------------------
   [OK] Proyecto React en frontend
-  [OK] 72 archivos de componentes (.jsx/.tsx).
-  [!]  Archivo muy grande (400 líneas): frontend/src/components/forms/PacienteForm.jsx. Probablemente debería dividirse.
-  [!]  Archivo muy grande (499 líneas): frontend/src/pages/citas/ListaCitas.jsx. Probablemente debería dividirse.
-  [!]  Archivo muy grande (343 líneas): frontend/src/pages/citas/NuevaCita.jsx. Probablemente debería dividirse.
-  [!]  Archivo muy grande (309 líneas): frontend/src/pages/consultas/NuevaConsulta.jsx. Probablemente debería dividirse.
-  [!]  Archivo muy grande (417 líneas): frontend/src/pages/dashboard/Dashboard.jsx. Probablemente debería dividirse.
-  [!]  Archivo muy grande (353 líneas): frontend/src/pages/pacientes/DetallePaciente.jsx. Probablemente debería dividirse.
-  [!]  Archivo muy grande (430 líneas): frontend/src/pages/pacientes/ListaPacientes.jsx. Probablemente debería dividirse.
-  [!]  Archivo muy grande (439 líneas): frontend/src/pages/vacunas/ListaVacunas.jsx. Probablemente debería dividirse.
-  [!]  Archivo muy grande (344 líneas): frontend/src/pages/vacunas/NuevaVacuna.jsx. Probablemente debería dividirse.
+  [OK] 101 archivos de componentes (.jsx/.tsx).
   [OK] useState usado 145 veces.
   [OK] useEffect usado 39 veces.
   [OK] React Router instalado; 30 rutas <Route> encontradas.
@@ -55,10 +52,10 @@ Estructura detectada
 ------------------------------------
   [OK] No se detectaron contraseñas ni claves escritas en el código.
   [OK] El frontend no tiene localhost escrito de forma fija.
-  [!]  README.md con 1 palabras (muy corto para documentación técnica).
+  [!]  README.md con 149 palabras (muy corto para documentación técnica).
   [!]  No hay archivos de configuración de despliegue (en Vercel/Netlify sin _redirects o vercel.json, F5 en una ruta da 404).
 
 Resumen
 -------
-  22 correctos · 11 para revisar · 1 problemas
+  25 correctos · 3 para revisar · 1 problemas
   Este reporte orienta la revisión; la nota se decide viendo el sistema funcionar y con la defensa del estudiante.

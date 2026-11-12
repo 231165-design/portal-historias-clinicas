@@ -9,6 +9,8 @@ import Button from '../../components/ui/Button';
 import SelectorPaciente from '../../components/consultas/SelectorPaciente';
 import FormSignosVitales from '../../components/consultas/FormSignosVitales';
 import FormSOAP from '../../components/consultas/FormSOAP';
+import InfoFormatoSOAP from '../../components/consultas/InfoFormatoSOAP';
+import { validateConsulta, calcularIMC } from '../../components/consultas/ValidacionesConsulta';
 import pacienteService from '../../services/pacienteService';
 import consultaService from '../../services/consultaService';
 
@@ -95,66 +97,8 @@ function NuevaConsulta() {
     }
   };
 
-  // ============================================================
-  // CÁLCULO AUTOMÁTICO DE IMC
-  // ============================================================
-  const imc = (() => {
-    if (formData.peso && formData.talla) {
-      const tallaM = parseFloat(formData.talla) / 100;
-      const peso = parseFloat(formData.peso);
-      if (tallaM > 0) return (peso / (tallaM * tallaM)).toFixed(1);
-    }
-    return null;
-  })();
-
-  // ============================================================
-  // VALIDAR
-  // ============================================================
-  const validate = () => {
-    const newErrors = {};
-
-    if (!formData.paciente_id) newErrors.paciente_id = 'Debe seleccionar un paciente';
-    if (!formData.motivo_consulta.trim()) {
-      newErrors.motivo_consulta = 'El motivo de consulta es obligatorio';
-    } else if (formData.motivo_consulta.trim().length < 5) {
-      newErrors.motivo_consulta = 'Mínimo 5 caracteres';
-    }
-    if (!formData.diagnostico_principal.trim()) {
-      newErrors.diagnostico_principal = 'El diagnóstico es obligatorio';
-    }
-
-    if (formData.temperatura) {
-      const temp = parseFloat(formData.temperatura);
-      if (temp < 30 || temp > 45) newErrors.temperatura = 'Temperatura fuera de rango (30-45°C)';
-    }
-    if (formData.presion_sistolica) {
-      const ps = parseInt(formData.presion_sistolica);
-      if (ps < 50 || ps > 300) newErrors.presion_sistolica = 'Fuera de rango (50-300)';
-    }
-    if (formData.presion_diastolica) {
-      const pd = parseInt(formData.presion_diastolica);
-      if (pd < 30 || pd > 200) newErrors.presion_diastolica = 'Fuera de rango (30-200)';
-    }
-    if (formData.frecuencia_cardiaca) {
-      const fc = parseInt(formData.frecuencia_cardiaca);
-      if (fc < 30 || fc > 250) newErrors.frecuencia_cardiaca = 'Fuera de rango (30-250)';
-    }
-    if (formData.saturacion_oxigeno) {
-      const sat = parseInt(formData.saturacion_oxigeno);
-      if (sat < 50 || sat > 100) newErrors.saturacion_oxigeno = 'Fuera de rango (50-100)';
-    }
-    if (formData.peso) {
-      const peso = parseFloat(formData.peso);
-      if (peso < 1 || peso > 500) newErrors.peso = 'Peso fuera de rango';
-    }
-    if (formData.talla) {
-      const talla = parseFloat(formData.talla);
-      if (talla < 30 || talla > 250) newErrors.talla = 'Talla fuera de rango';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  // Calcular IMC usando helper
+  const imc = calcularIMC(formData.peso, formData.talla);
 
   // ============================================================
   // GUARDAR CONSULTA
@@ -162,7 +106,9 @@ function NuevaConsulta() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validate()) {
+    const validation = validateConsulta(formData);
+    if (!validation.isValid) {
+      setErrors(validation.errors);
       const firstError = document.querySelector('.border-medical-red');
       if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
@@ -225,41 +171,26 @@ function NuevaConsulta() {
   return (
     <div className="space-y-6 animate-fade-in max-w-5xl mx-auto">
       {/* HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <button
-            onClick={() => navigate('/consultas')}
-            className="text-sm text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 mb-2 flex items-center gap-1 transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Volver a consultas
-          </button>
-          <h1 className="text-2xl font-extrabold text-gray-800 dark:text-white">
-            Nueva Consulta Médica
-          </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Registra la atención médica del paciente (formato SOAP)
-          </p>
-        </div>
+      <div>
+        <button
+          onClick={() => navigate('/consultas')}
+          className="text-sm text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 mb-2 flex items-center gap-1 transition-colors"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          Volver a consultas
+        </button>
+        <h1 className="text-2xl font-extrabold text-gray-800 dark:text-white">
+          Nueva Consulta Médica
+        </h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          Registra la atención médica del paciente (formato SOAP)
+        </p>
       </div>
 
-      {/* INFO */}
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
-        <div className="flex items-start gap-3">
-          <span className="text-2xl">💡</span>
-          <div>
-            <h4 className="font-bold text-blue-800 dark:text-blue-300 text-sm">
-              Formato SOAP
-            </h4>
-            <p className="text-xs text-blue-700 dark:text-blue-400 mt-1">
-              <strong>S</strong>ubjetivo (motivo) · <strong>O</strong>bjetivo (examen físico) ·{' '}
-              <strong>A</strong>nálisis (diagnóstico) · <strong>P</strong>lan (tratamiento)
-            </p>
-          </div>
-        </div>
-      </div>
+      {/* INFO SOAP */}
+      <InfoFormatoSOAP />
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <SelectorPaciente

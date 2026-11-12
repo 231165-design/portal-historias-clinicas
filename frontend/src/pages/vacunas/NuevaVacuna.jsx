@@ -6,24 +6,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import Button from '../../components/ui/Button';
-import Input from '../../components/ui/Input';
-import Select from '../../components/ui/Select';
-import Card from '../../components/ui/Card';
+import InfoRegistroVacuna from '../../components/vacunas/InfoRegistroVacuna';
+import SelectorPacienteVacuna from '../../components/vacunas/SelectorPacienteVacuna';
+import FormDatosVacuna from '../../components/vacunas/FormDatosVacuna';
 import pacienteService from '../../services/pacienteService';
 import vacunaService from '../../services/vacunaService';
-import { TIPOS_VACUNA } from '../../utils/constants';
-import { calcularEdad, formatDNI } from '../../utils/formatters';
-
-const DOSIS_OPCIONES = [
-  '1ra dosis',
-  '2da dosis',
-  '3ra dosis',
-  '4ta dosis',
-  'Refuerzo 1',
-  'Refuerzo 2',
-  'Dosis única',
-  'Anual',
-];
 
 function NuevaVacuna() {
   const navigate = useNavigate();
@@ -174,150 +161,23 @@ function NuevaVacuna() {
       </div>
 
       {/* INFO */}
-      <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-4">
-        <div className="flex items-start gap-3">
-          <span className="text-2xl">💉</span>
-          <div>
-            <h4 className="font-bold text-emerald-800 dark:text-emerald-300 text-sm">
-              Registro de vacunación
-            </h4>
-            <p className="text-xs text-emerald-700 dark:text-emerald-400 mt-1">
-              Complete los datos según el carnet de vacunación del paciente. Los campos marcados con <span className="text-red-500 font-bold">*</span> son obligatorios.
-            </p>
-          </div>
-        </div>
-      </div>
+      <InfoRegistroVacuna />
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        <SelectorPacienteVacuna
+          pacientes={pacientes}
+          pacienteId={formData.paciente_id}
+          pacienteSeleccionado={pacienteSeleccionado}
+          onChange={handleChange}
+          error={errors.paciente_id}
+        />
 
-        {/* ============================================================ */}
-        {/* PACIENTE */}
-        {/* ============================================================ */}
-        <Card title="👤 Paciente" subtitle="Seleccione el paciente vacunado" padding="md">
-          <Select
-            label="Paciente *"
-            name="paciente_id"
-            value={formData.paciente_id}
-            onChange={handleChange}
-            options={pacientes.map((p) => ({
-              value: p.id,
-              label: `${p.nombres} ${p.apellidos} — HC: ${p.historia_clinica}`,
-            }))}
-            placeholder="Seleccione un paciente"
-            error={errors.paciente_id}
-            required
-          />
+        <FormDatosVacuna
+          formData={formData}
+          onChange={handleChange}
+          errors={errors}
+        />
 
-          {pacienteSeleccionado && (
-            <div className="mt-4 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl p-4">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-                <div>
-                  <p className="text-gray-500 dark:text-gray-400 uppercase font-semibold mb-0.5">DNI</p>
-                  <p className="text-gray-800 dark:text-white font-semibold">
-                    {formatDNI(pacienteSeleccionado.dni) || '—'}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-gray-500 dark:text-gray-400 uppercase font-semibold mb-0.5">Edad</p>
-                  <p className="text-gray-800 dark:text-white font-semibold">
-                    {calcularEdad(pacienteSeleccionado.fecha_nacimiento)} años
-                  </p>
-                </div>
-                <div>
-                  <p className="text-gray-500 dark:text-gray-400 uppercase font-semibold mb-0.5">Sexo</p>
-                  <p className="text-gray-800 dark:text-white font-semibold">
-                    {pacienteSeleccionado.sexo === 'M' ? 'Masculino' : 'Femenino'}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-gray-500 dark:text-gray-400 uppercase font-semibold mb-0.5">Teléfono</p>
-                  <p className="text-gray-800 dark:text-white font-semibold">
-                    {pacienteSeleccionado.telefono || '—'}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-        </Card>
-
-        {/* ============================================================ */}
-        {/* DATOS DE LA VACUNA */}
-        {/* ============================================================ */}
-        <Card title="💉 Datos de la Vacuna" subtitle="Información de la dosis aplicada" padding="md">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Select
-              label="Tipo de vacuna *"
-              name="tipo_vacuna"
-              value={formData.tipo_vacuna}
-              onChange={handleChange}
-              options={TIPOS_VACUNA.map((t) => ({ value: t, label: t }))}
-              placeholder="Seleccione la vacuna"
-              error={errors.tipo_vacuna}
-              required
-            />
-
-            <Select
-              label="Dosis"
-              name="dosis"
-              value={formData.dosis}
-              onChange={handleChange}
-              options={DOSIS_OPCIONES.map((d) => ({ value: d, label: d }))}
-            />
-
-            <Input
-              label="Fecha de aplicación *"
-              name="fecha_aplicacion"
-              type="date"
-              value={formData.fecha_aplicacion}
-              onChange={handleChange}
-              error={errors.fecha_aplicacion}
-              required
-              max={new Date().toISOString().split('T')[0]}
-            />
-
-            <Input
-              label="Lugar de aplicación"
-              name="lugar_aplicacion"
-              value={formData.lugar_aplicacion}
-              onChange={handleChange}
-              placeholder="Ej: Posta Médica San Juan"
-            />
-
-            <Input
-              label="Lote"
-              name="lote"
-              value={formData.lote}
-              onChange={handleChange}
-              placeholder="Ej: HB-2026-001"
-            />
-
-            <Input
-              label="Laboratorio"
-              name="laboratorio"
-              value={formData.laboratorio}
-              onChange={handleChange}
-              placeholder="Ej: Sinovac"
-            />
-          </div>
-
-          <div className="mt-4">
-            <label className="block mb-1.5 text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Observaciones (opcional)
-            </label>
-            <textarea
-              name="observaciones"
-              value={formData.observaciones}
-              onChange={handleChange}
-              rows={3}
-              className="w-full px-4 py-2.5 text-sm rounded-lg border-2 border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:border-primary-500 focus:ring-2 focus:ring-primary-100 dark:focus:ring-primary-900/30 outline-none"
-              placeholder="Reacciones adversas, observaciones, etc..."
-            />
-          </div>
-        </Card>
-
-        {/* ============================================================ */}
-        {/* BOTONES */}
-        {/* ============================================================ */}
         <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-700">
           <Button
             type="button"
