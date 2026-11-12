@@ -1,14 +1,15 @@
 REPORTE DE VERIFICACIÓN DEL PROYECTO
 Carpeta: D:\U\CLASS 26-2\COMERC\zprou\salud\portalhistorias
-Fecha:   12/11/2026, 4:54:25 p. m.
+Fecha:   12/11/2026, 5:41:06 p. m.
 Node:    v24.14.0
 
 0. Repositorio y autoría (Git)
 ------------------------------
-  [X]  2 commits en 1 días distintos (del 2026-11-12 al 2026-11-12).
+  [X]  3 commits en 1 días distintos (del 2026-11-12 al 2026-11-12).
        Autores:
-         2	231165-design <231165@unamba.edu.pe>
-  [!]  No hay etiquetas de versión (git tag v1.0, v2.0...).
+         3	231165-design <231165@unamba.edu.pe>
+  [OK] Etiquetas de versión: v3.0
+         v3.0: 2026-11-12
   [OK] Repositorio remoto: https://github.com/231165-design/portal-historias-clinicas.git
   [OK] Ningún .env subido al repositorio.
   [OK] node_modules no está en el repositorio.
@@ -52,10 +53,10 @@ Estructura detectada
 ------------------------------------
   [OK] No se detectaron contraseñas ni claves escritas en el código.
   [OK] El frontend no tiene localhost escrito de forma fija.
-  [!]  README.md con 149 palabras (muy corto para documentación técnica).
-  [!]  No hay archivos de configuración de despliegue (en Vercel/Netlify sin _redirects o vercel.json, F5 en una ruta da 404).
+  [OK] README.md con 296 palabras.
+  [OK] Hay archivos de configuración de despliegue (vercel.json, netlify.toml, _redirects, Dockerfile...).
 
 Resumen
 -------
-  25 correctos · 3 para revisar · 1 problemas
+  28 correctos · 0 para revisar · 1 problemas
   Este reporte orienta la revisión; la nota se decide viendo el sistema funcionar y con la defensa del estudiante.
