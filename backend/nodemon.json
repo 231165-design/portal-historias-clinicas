@@ -1,0 +1,10 @@
+{
+  "watch": ["src", "server.js"],
+  "ext": "js,json",
+  "ignore": ["node_modules", "logs", "uploads", "tests"],
+  "delay": "1000",
+  "verbose": true,
+  "env": {
+    "NODE_ENV": "development"
+  }
+}

@@ -1,0 +1,218 @@
+/* ============================================================
+   IMPORTACIONES (deben ir primero)
+   ============================================================ */
+@import './assets/styles/variables.css';
+@import './assets/styles/animations.css';
+@import './assets/styles/global.css';
+
+/* ============================================================
+   TAILWIND
+   ============================================================ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   ROOT
+   ============================================================ */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================
+   LOADER
+   ============================================================ */
+.app-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+}
+
+.app-loader__content {
+  text-align: center;
+  color: white;
+}
+
+.app-loader__logo {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: breathe 2s ease-in-out infinite;
+}
+
+.app-loader__text {
+  font-size: 1.25rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.app-loader__spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  margin: 1.5rem auto 0;
+  animation: spin 1s linear infinite;
+}
+
+/* ============================================================
+   MODO OSCURO GLOBAL
+   Sobrescribe los colores de Tailwind cuando el <html> tiene .dark
+   ============================================================ */
+
+.dark {
+  color-scheme: dark;
+}
+
+/* --- Fondo principal --- */
+.dark body {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+/* --- Fondos blancos → oscuro --- */
+.dark .bg-white {
+  background-color: #1e293b !important;
+}
+
+.dark .bg-gray-50 {
+  background-color: #0f172a !important;
+}
+
+.dark .bg-gray-100 {
+  background-color: #1e293b !important;
+}
+
+.dark .bg-gray-200 {
+  background-color: #334155 !important;
+}
+
+/* --- Textos --- */
+.dark .text-gray-900 {
+  color: #ffffff !important;
+}
+
+.dark .text-gray-800 {
+  color: #f1f5f9 !important;
+}
+
+.dark .text-gray-700 {
+  color: #e2e8f0 !important;
+}
+
+.dark .text-gray-600 {
+  color: #cbd5e1 !important;
+}
+
+.dark .text-gray-500 {
+  color: #94a3b8 !important;
+}
+
+.dark .text-gray-400 {
+  color: #64748b !important;
+}
+
+/* --- Bordes --- */
+.dark .border-gray-100 {
+  border-color: #334155 !important;
+}
+
+.dark .border-gray-200 {
+  border-color: #475569 !important;
+}
+
+.dark .border-gray-300 {
+  border-color: #64748b !important;
+}
+
+/* --- Hover --- */
+.dark .hover\:bg-gray-50:hover {
+  background-color: #1e293b !important;
+}
+
+.dark .hover\:bg-gray-100:hover {
+  background-color: #334155 !important;
+}
+
+.dark .hover\:bg-gray-200:hover {
+  background-color: #475569 !important;
+}
+
+/* --- Sidebar / Topbar --- */
+.dark aside {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+.dark header {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* --- Tarjetas de estadísticas --- */
+.dark .shadow-card {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+/* --- Inputs --- */
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+  border-color: #334155 !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  border-color: #0ea5e9 !important;
+}
+
+/* --- Tablas --- */
+.dark table thead {
+  background-color: #1e293b !important;
+}
+
+.dark table tbody tr:hover {
+  background-color: #334155 !important;
+}
+
+/* --- Modales / Dropdowns --- */
+.dark .shadow-xl,
+.dark .shadow-2xl {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* --- Nav links activos --- */
+.dark .bg-primary-50 {
+  background-color: #0c4a6e !important;
+}
+
+.dark .text-primary-700 {
+  color: #38bdf8 !important;
+}
+
+/* --- Scrollbar en modo oscuro --- */
+.dark ::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-color: #1e293b;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
